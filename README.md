@@ -1,4 +1,5 @@
 # CS492_Group3_TylerPollock
+Anyone is free to use this or change this, however this products' sole intent is to be used for my computer science group project team!
 
 Here is the framework for the bookstore application for your guys to tinker with. I suggest keeping a version of the base seperate and unchanged, then create a copy that you modify with your assigned task so it is easy to see what you've added! :)
 
