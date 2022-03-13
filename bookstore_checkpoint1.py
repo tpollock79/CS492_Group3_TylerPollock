@@ -1,3 +1,7 @@
+#Computer Science Team Project 2 CS492
+#Bookstore Application - "By the Books"
+#Nathan Carballo, Tyler Pollock, Eric Cunningham, Roemen Schlotfeldt, Marcus Colquitt, Trevor Sharp
+#March 13th, 2022
 import tkinter as tk
 from tkinter import ttk
 from functools import partial
@@ -5,7 +9,7 @@ import sqlite3
 from tkinter import *
 from tkinter import messagebox
 
-root = tk.Tk()
+root = tk.Tk()       #Create root window to prompt employee or customer login
 root.title('By The Books')
 window_width = 600
 window_height = 200
@@ -18,7 +22,7 @@ message = ttk.Label(root, text="Hello, welcome to By The Books!").pack()
 #root.iconbitmap('bythebooks.ico')
 
 
-def customer_click():
+def customer_click():       #Function to create window with customer login
     login_window = tk.Tk()
     login_window.title('By The Books Customer Login')
     window_width = 600
@@ -38,7 +42,7 @@ def customer_click():
     loginButton = ttk.Button(login_window, text="Login", command=show_store_customer).grid(row=1, column=2)
 
 
-def employee_click():
+def employee_click():        #Function to create window for employee login
     login_window = tk.Tk()
     login_window.title('By The Books Employee Login')
     window_width = 600
@@ -62,7 +66,7 @@ user_button = ttk.Button(root, text='Customer login', command=customer_click).pa
 employee_button = ttk.Button(root, text='Employee login', command=employee_click).pack()
 
 
-def show_store_customer():
+def show_store_customer():      #Function to create window with customer functions and establish connection to db's
     class DB:
         def __init__(self):
             self.conn = sqlite3.connect("bookstore.db")
@@ -206,7 +210,7 @@ def show_store_customer():
     b4.grid(row=5, column=3)
 
 
-def show_store_employee():
+def show_store_employee():       #Function to create window for employee functions and establish db connections
     class DB:
         def __init__(self):
             self.conn = sqlite3.connect("bookstore.db")
