@@ -8,21 +8,38 @@ from functools import partial
 import sqlite3
 from tkinter import *
 from tkinter import messagebox
+from PIL import ImageTk, Image
 
 root = tk.Tk()       #Create root window to prompt employee or customer login
 root.title('By The Books')
-window_width = 600
-window_height = 200
+window_width = 900
+window_height = 506
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
 center_x = int(screen_width/2 - window_width/2)
 center_y = int(screen_height/2 - window_height/2)
 root.geometry(f'{window_width}x{window_height}+{center_x}+{center_y}')
 message = ttk.Label(root, text="Hello, welcome to By The Books!").pack()
-#root.iconbitmap('bythebooks.ico')
+root.iconbitmap('bythebooks.ico')
+img = ImageTk.PhotoImage(Image.open("bookstoregradient.png"))
+panel = tk.Label(root, image = img)
+panel.pack(side = "bottom", fill = "both", expand = "yes")
 
 
-def customer_click():       #Function to create window with customer login
+def user_login(type, user, password):
+    if type == 'cust':
+        if user == "customerexample@gmail.com" and password == "1234567890":
+            show_store_customer()
+        else:
+            messagebox.showerror("Invalid", "Invalid Email or Phone Number")
+    elif type == 'emp':
+        if user == 'admin' and password == 'admin':
+            show_store_employee()
+        else:
+            messagebox.showerror("Invalid", "Invalid Username And Or Password")
+
+
+def customer_click():
     login_window = tk.Tk()
     login_window.title('By The Books Customer Login')
     window_width = 600
@@ -32,17 +49,24 @@ def customer_click():       #Function to create window with customer login
     center_x = int(screen_width / 2 - window_width / 2)
     center_y = int(screen_height / 2 - window_height / 2)
     login_window.geometry(f'{window_width}x{window_height}+{center_x}+{center_y}')
-    #login_window.iconbitmap('bythebooks.ico')
-    username = ''
-    password = ''
-    usernameLabel = ttk.Label(login_window, text="User Name").grid(row=0, column=0)
-    usernameEntry = ttk.Entry(login_window, textvariable=username).grid(row=0, column=1)
-    passwordLabel = ttk.Label(login_window, text="Password").grid(row=1, column=0)
-    passwordEntry = ttk.Entry(login_window, textvariable=password, show='*').grid(row=1, column=1)
-    loginButton = ttk.Button(login_window, text="Login", command=show_store_customer).grid(row=1, column=2)
+
+    def customer_login():
+        user, password, type = usernameEntry.get(), passwordEntry.get(), 'cust'
+        login_window.destroy()
+        user_login(type, user, password)
+
+    usernameLabel = ttk.Label(login_window, text="Email Address")
+    usernameLabel.grid(row=0, column=0)
+    usernameEntry = ttk.Entry(login_window)
+    usernameEntry.grid(row=0, column=1)
+    passwordLabel = ttk.Label(login_window, text="Phone Number ")
+    passwordLabel.grid(row=1, column=0)
+    passwordEntry = ttk.Entry(login_window, show='')
+    passwordEntry.grid(row=1, column=1)
+    loginButton = ttk.Button(login_window, text="Login", command=customer_login).grid(row=1, column=2)
 
 
-def employee_click():        #Function to create window for employee login
+def employee_click():
     login_window = tk.Tk()
     login_window.title('By The Books Employee Login')
     window_width = 600
@@ -52,19 +76,26 @@ def employee_click():        #Function to create window for employee login
     center_x = int(screen_width / 2 - window_width / 2)
     center_y = int(screen_height / 2 - window_height / 2)
     login_window.geometry(f'{window_width}x{window_height}+{center_x}+{center_y}')
-    #login_window.iconbitmap('bythebooks.ico')
-    username = ''
-    password = ''
-    usernameLabel = ttk.Label(login_window, text="User Name").grid(row=0, column=0)
-    usernameEntry = ttk.Entry(login_window, textvariable=username).grid(row=0, column=1)
-    passwordLabel = ttk.Label(login_window, text="Password").grid(row=1, column=0)
-    passwordEntry = ttk.Entry(login_window, textvariable=password, show='*').grid(row=1, column=1)
-    loginButton = ttk.Button(login_window, text="Login", command=show_store_employee).grid(row=1, column=2)
 
-user_button = ttk.Button(root, text='Customer login', command=customer_click).pack()
+    def emp_login():
+        user, password, type = usernameEntry.get(), passwordEntry.get(), 'emp'
+        login_window.destroy()
+        user_login(type, user, password)
 
-employee_button = ttk.Button(root, text='Employee login', command=employee_click).pack()
+    usernameLabel = ttk.Label(login_window, text="User Name")
+    usernameLabel.grid(row=0, column=0)
+    usernameEntry = ttk.Entry(login_window)
+    usernameEntry.grid(row=0, column=1)
+    passwordLabel = ttk.Label(login_window, text="Password")
+    passwordLabel.grid(row=1, column=0)
+    passwordEntry = ttk.Entry(login_window, show='*')
+    passwordEntry.grid(row=1, column=1)
+    loginButton = ttk.Button(login_window, text="Login", command=emp_login).grid(row=1, column=2)
 
+
+user_button = ttk.Button(root, text='Customer login', command=customer_click).place(x = 400, y = 100)
+
+employee_button = ttk.Button(root, text='Employee login', command=employee_click).place(x = 400, y = 150)
 
 def show_store_customer():      #Function to create window with customer functions and establish connection to db's
     class DB:
@@ -114,7 +145,7 @@ def show_store_customer():      #Function to create window with customer functio
             rows = self.cur.fetchall()
             return rows
 
-    sbd = SDB()
+    sdb = SDB()
 
     def get_selected_row(event):
         global selected_tuple
@@ -143,11 +174,8 @@ def show_store_customer():      #Function to create window with customer functio
         print('Buy Books')
 
     window = Tk()
-
     window.title("Customer View")
-
-    #window.iconbitmap('bythebooks.ico')
-
+    window.iconbitmap('bythebooks.ico')
 
     def on_closing():
         dd = db
@@ -270,7 +298,7 @@ def show_store_employee():       #Function to create window for employee functio
             rows = self.cur.fetchall()
             return rows
 
-    sbd = SDB()
+    sdb = SDB()
 
     class MDB:
         def __init__(self):
@@ -321,28 +349,72 @@ def show_store_employee():       #Function to create window for employee functio
 
     def update_command():
         db.update(selected_tuple[0], e1.get(), e2.get(), e3.get(), e4.get())
+        list1.delete(0, END)
+        for row in db.view():
+            list1.insert(END, row)
 
     def add_command():
-        db.insert(e1.get(), e2.get(), e3.get(), e4.get())
+        if db.search(e1.get(), e2.get()) != []:
+            for row in db.search(e1.get(), e2.get()):
+                bookcount = 0
+                exdata = row[1],row[2]
+                addData = e1.get(), e2.get()
+                if exdata == addData:
+                    if 'Soon' in row[4]:
+                        db.delete(row[0])
+                    else:
+                        bookcount = bookcount + int(row[4])
+                        db.delete(row[0])
+            if 'Soon' in row[4]:
+                db.insert(e1.get(), e2.get(), e3.get(), e4.get())
+            else:
+                numBooks = bookcount + int(e4.get())
+                db.insert(e1.get(), e2.get(), e3.get(),numBooks)
+        else:
+            db.insert(e1.get(), e2.get(), e3.get(), e4.get())
         list1.delete(0, END)
-        list1.insert(END, (e1.get(), e2.get(), e3.get(), e4.get()))
+        for row in db.view():
+            list1.insert(END, row)
 
     def delete_command():
         db.delete(selected_tuple[0])
+        list1.delete(0, END)
+        for row in db.view():
+            list1.insert(END, row)
 
     def delete_manufacturer():
         mdb.delete(selected_tuple[0])
 
     def sales_command():
-        print('Put code to view sales database here!')
+        list1.delete(0, END)
+        for row in sdb.view():
+            list1.insert(END, row)
 
     def order_command():
 
         def add_manufacturer():
             mdb.insert(e1.get(), e2.get(), e3.get(), e4.get())
-            db.insert(e1.get(), e2.get(), e3.get(), '0: Back in Stock Soon!')
-            list2.delete(0, END)
-            list2.insert(END, (e1.get(), e2.get(), e3.get(), e4.get()))
+            if db.search(e1.get(), e2.get()) != []:
+                for row in db.search(e1.get(), e2.get()):
+                    bookcount = 0
+                    exdata = row[1], row[2]
+                    addData = e1.get(), e2.get()
+                    if exdata == addData:
+                        if 'Soon' in row[4]:
+                            db.delete(row[0])
+                        else:
+                            bookcount = bookcount + int(row[4])
+                            db.delete(row[0])
+                if 'Soon' in row[4]:
+                    db.insert(e1.get(), e2.get(), e3.get(), e4.get())
+                else:
+                    numBooks = bookcount + int(e4.get())
+                    db.insert(e1.get(), e2.get(), e3.get(), numBooks)
+            else:
+                db.insert(e1.get(), e2.get(), e3.get(), e4.get())
+            list1.delete(0, END)
+            for row in db.view():
+                list1.insert(END, row)
 
         def view_manufacturer():
             list2.delete(0, END)
@@ -351,7 +423,8 @@ def show_store_employee():       #Function to create window for employee functio
 
         manufacturerWindow = Tk()
         manufacturerWindow.title("Manufacturer Order")
-        #manufacturerWindow.iconbitmap('bythebooks.ico')
+        manufacturerWindow.iconbitmap('bythebooks.ico')
+
 
         l1 = Label(manufacturerWindow, text="Title")
         l1.grid(row=0, column=0)
@@ -403,10 +476,9 @@ def show_store_employee():       #Function to create window for employee functio
 
 
     window = Tk()
-
     window.title("Employee View")
+    window.iconbitmap('bythebooks.ico')
 
-    #window.iconbitmap('bythebooks.ico')
 
     def on_closing():
         dd = db
