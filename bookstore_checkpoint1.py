@@ -231,7 +231,7 @@ def show_store_employee():  # Function to create window for employee functions a
             self.conn = sqlite3.connect("bookstore.db")
             self.cur = self.conn.cursor()
             self.cur.execute(
-                "CREATE TABLE IF NOT EXISTS book (id INTEGER PRIMARY KEY, title TEXT, author TEXT, isbn TEXT, quantity TEXT)")
+                "CREATE TABLE IF NOT EXISTS book (id INTEGER PRIMARY KEY, title TEXT, author TEXT, isbn TEXT, quantity INTEGER)")
             self.conn.commit()
 
         def __del__(self):
@@ -293,7 +293,7 @@ def show_store_employee():  # Function to create window for employee functions a
             self.conn = sqlite3.connect("manufacturer.db")
             self.cur = self.conn.cursor()
             self.cur.execute(
-                "CREATE TABLE IF NOT EXISTS manufacturer (manufacturerID INTEGER PRIMARY KEY, title TEXT, author TEXT, isbn TEXT, quantity TEXT)")
+                "CREATE TABLE IF NOT EXISTS manufacturer (manufacturerID INTEGER PRIMARY KEY, title TEXT, author TEXT, isbn TEXT, quantity INTEGER)")
             self.conn.commit()
         def __del__(self):
             self.conn.close()
