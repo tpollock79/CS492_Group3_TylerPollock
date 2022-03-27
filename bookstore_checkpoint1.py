@@ -159,7 +159,7 @@ def show_store_customer(user, password):      #Function to create window with cu
         for row in db.search(e1.get(), e2.get()):
             list1.insert(END, row)
 
-    def purchase_command():
+    def purchase_command(): #Remember to change quantity desired to purchase
         db.purchase(e1.get(), e2.get(), e4.get())
         sdb.purchase(e1.get(), e2.get(), e3.get(), cust, phone)
         messagebox.showinfo(title="Purchase", message="Purchase Successful!")
@@ -231,7 +231,7 @@ def show_store_employee():  # Function to create window for employee functions a
             self.conn = sqlite3.connect("bookstore.db")
             self.cur = self.conn.cursor()
             self.cur.execute(
-                "CREATE TABLE IF NOT EXISTS book (id INTEGER PRIMARY KEY, title TEXT, author TEXT, isbn TEXT, quantity INTEGER)")
+                "CREATE TABLE IF NOT EXISTS book (id INTEGER PRIMARY KEY, title TEXT, author TEXT, isbn TEXT, quantity TEXT)")
             self.conn.commit()
 
         def __del__(self):
@@ -293,7 +293,7 @@ def show_store_employee():  # Function to create window for employee functions a
             self.conn = sqlite3.connect("manufacturer.db")
             self.cur = self.conn.cursor()
             self.cur.execute(
-                "CREATE TABLE IF NOT EXISTS manufacturer (manufacturerID INTEGER PRIMARY KEY, title TEXT, author TEXT, isbn TEXT, quantity INTEGER)")
+                "CREATE TABLE IF NOT EXISTS manufacturer (manufacturerID INTEGER PRIMARY KEY, title TEXT, author TEXT, isbn TEXT, quantity TEXT)")
             self.conn.commit()
         def __del__(self):
             self.conn.close()
