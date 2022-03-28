@@ -156,7 +156,7 @@ def show_store_customer(user, password):      #Function to create window with cu
 
     def search_command():
         list1.delete(0, END)
-        for row in db.search(e1.get(), e2.get()):
+        for row in db.search(e1.get(), e2.get(), e3.get()):
             list1.insert(END, row)
 
     def purchase_command(): #Remember to change quantity desired to purchase
