@@ -163,6 +163,9 @@ def show_store_customer(user, password):      #Function to create window with cu
         db.purchase(e1.get(), e2.get(), e4.get())
         sdb.purchase(e1.get(), e2.get(), e3.get(), cust, phone)
         messagebox.showinfo(title="Purchase", message="Purchase Successful!")
+        list1.delete(0, END)
+        for row in db.view():
+            list1.insert(END, row)
 
     window = Tk()
     window.title("Customer View")
@@ -395,6 +398,10 @@ def show_store_employee():  # Function to create window for employee functions a
             list1.delete(0, END)
             for row in db.view():
                 list1.insert(END, row)
+            list2.delete(0, END)
+            for row in mdb.view():
+                list2.insert(END, row)
+
 
         def view_manufacturer():
             list2.delete(0, END)
